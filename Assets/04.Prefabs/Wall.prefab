@@ -95,4 +95,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spr: {fileID: 5662812471559523208}
   _tr: {fileID: 5662812471559523215}
-  _fMoveSpeed: 1
+  _fMoveSpeed: 5
