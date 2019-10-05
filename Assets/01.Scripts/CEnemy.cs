@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CEnemy : MonoBehaviour
 {
@@ -16,6 +14,7 @@ public class CEnemy : MonoBehaviour
     public float _fMoveSpeed = 0f;
 
     private Transform _tr = null;
+    private bool _bDoDamage = false;
 
     private void Awake()
     {
@@ -25,5 +24,17 @@ public class CEnemy : MonoBehaviour
     private void Update()
     {
         _tr.Translate(Vector3.left * _fMoveSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (_bDoDamage)
+            return;
+
+        if (collision.tag == "Player")
+        {
+            collision.gameObject.GetComponent<CCharacter>().GetDamaged();
+            _bDoDamage = true;
+        }
     }
 }
