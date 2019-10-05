@@ -7,6 +7,11 @@ public class Timer : MonoBehaviour
 {
     private float _limitTime = 180.0f; // 시간제한 3분
 
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public float limitTime
     {
         get
