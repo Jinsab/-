@@ -28,6 +28,11 @@ public class CEnemy : MonoBehaviour
     {
         if(!_bIsDead)
             _tr.Translate(Vector3.left * _fMoveSpeed * Time.deltaTime);
+
+        if (transform.position.x < -4.5f || transform.position.y < -2f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -52,6 +57,8 @@ public class CEnemy : MonoBehaviour
         _rig2D.gravityScale = 0f;
         _bIsDead = false;
         _bDoDamage = false;
+
+        _fMoveSpeed += Random.Range(0f, 1f);
     }
     
     public void TakeDamaged()

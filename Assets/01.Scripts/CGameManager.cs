@@ -23,6 +23,7 @@ public class CGameManager : MonoBehaviour
     [SerializeField] private GameObject[] _prefEnemys = null;
     [SerializeField] private Transform[] _trEnemyRegenPos = null;
     [SerializeField] private Transform _trEnemyPrent = null;
+    [SerializeField] private AudioSource _bgm = null;
 
     public GAME_STATE _eState = GAME_STATE.NULL;
     public bool _bIsScrollBG = false;

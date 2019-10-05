@@ -6,6 +6,9 @@ public class CCharacter : MonoBehaviour
     [SerializeField] private SpriteRenderer _spr = null;
     [SerializeField] private Animator _animator = null;
     [SerializeField] private Transform _trHitPosition = null;
+    [SerializeField] private SpriteRenderer _effHit = null;
+    [SerializeField] private AudioClip _soundHit = null;
+    [SerializeField] private AudioClip _soundDamaged = null;
 
     private void Update()
     {
@@ -30,6 +33,8 @@ public class CCharacter : MonoBehaviour
             if (enemy._eType == CEnemy.ENEMY_TYPE.PUNCH)
             {
                 enemy.TakeDamaged();
+                AudioSource.PlayClipAtPoint(_soundHit, CGameManager._pInstance.transform.position);
+                StartCoroutine(HitEffect());
             }            
         }
     }
@@ -45,6 +50,8 @@ public class CCharacter : MonoBehaviour
             if (enemy._eType == CEnemy.ENEMY_TYPE.KICK)
             {
                 enemy.TakeDamaged();
+                AudioSource.PlayClipAtPoint(_soundHit, CGameManager._pInstance.transform.position);
+                StartCoroutine(HitEffect());
             }
         }
     }
@@ -58,6 +65,8 @@ public class CCharacter : MonoBehaviour
     {
         StartCoroutine(TakeDamage());
 
+        _animator.SetTrigger("Damaged");
+        AudioSource.PlayClipAtPoint(_soundDamaged, CGameManager._pInstance.transform.position);
         CGameManager._pInstance.PlayerTakeDamage();
     }
 
@@ -71,5 +80,12 @@ public class CCharacter : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
         yield return null;
+    }
+
+    IEnumerator HitEffect()
+    {
+        _effHit.enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        _effHit.enabled = false;
     }
 }
