@@ -38,6 +38,8 @@ public class CGameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Screen.SetResolution(720, 1280, true);
     }
 
     private void Start()
