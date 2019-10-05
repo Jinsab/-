@@ -10,7 +10,7 @@ public class QuestionManager : MonoBehaviour
     public Text questionText;
     public Text correntText;
     public Timer timer;
-    public Slider questionTimer;
+    public Image questionTimer;
     public Button askButton01;
     public Button askButton02;
     public Button askButton03;
@@ -22,8 +22,7 @@ public class QuestionManager : MonoBehaviour
 
     private void Start()
     {
-        questionTimer.maxValue = maxTime;
-        questionTimer.value = maxTime;
+        questionTimer.fillAmount = 1;
         questionNumber = Random.Range(0, 1);
     }
 
@@ -31,14 +30,18 @@ public class QuestionManager : MonoBehaviour
     {
         while (true)
         {
-            questionTimer.value -= 1;
+            questionTimer.fillAmount -= 0.1f;
             yield return new WaitForSeconds(delayTime);
 
-            if (questionTimer.value == 0)
+            if (questionTimer.fillAmount == 0)
             {
                 correntText.text = "시간 초과!";
                 timer.limitTime -= maxTime;
                 StartCoroutine("SetQuiz");
+
+                yield return new WaitForSeconds(1f);
+
+                correntText.text = "";
             }
         }
     }
@@ -180,7 +183,7 @@ public class QuestionManager : MonoBehaviour
                 break;
         }
 
-        questionTimer.value = 10;
+        questionTimer.fillAmount = 1;
 
         yield return new WaitForFixedUpdate();
     }
@@ -188,6 +191,14 @@ public class QuestionManager : MonoBehaviour
     IEnumerator ClearQuiz()
     {
         _timer.StopCoroutine("CountTime");
+
+        while (gameObject.transform.parent.position.y > -1440f)
+        {
+            gameObject.transform.parent.position -= new Vector3(0f, 10f);
+            yield return new WaitForSeconds(0.01337f);
+        }
+
+        gameObject.transform.parent.gameObject.SetActive(false);
 
         yield return new WaitForFixedUpdate();
     }
@@ -684,18 +695,40 @@ public class QuestionManager : MonoBehaviour
 
     void correct()
     {
+        StopCoroutine("CorrectRoutine");
+        StopCoroutine("WrongRoutine");
+        StartCoroutine("CorrectRoutine");
+    }
+
+    void wrong()
+    {
+        StopCoroutine("CorrectRoutine");
+        StopCoroutine("WrongRoutine");
+        StartCoroutine("WrongRoutine");
+    }
+
+    IEnumerator CorrectRoutine()
+    {
         quizCount++;
         correntText.text = "정답!";
         StartCoroutine("SetQuiz", 1.0f);
+
+        yield return new WaitForSeconds(1f);
+
+        correntText.text = "";
 
         if (quizCount == 5)
             StartCoroutine("ClearQuiz");
     }
 
-    void wrong()
+    IEnumerator WrongRoutine()
     {
         correntText.text = "오답!";
         timer.limitTime -= maxTime;
         StartCoroutine("SetQuiz", 1.0f);
+
+        yield return new WaitForSeconds(1f);
+
+        correntText.text = "";
     }
 }

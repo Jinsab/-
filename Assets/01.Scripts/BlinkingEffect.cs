@@ -25,9 +25,6 @@ public class BlinkingEffect : MonoBehaviour
         StartCoroutine("In");
         y1 = (TimeUI.transform.position.y-640f) / 60.0f;
         y2 = (QuizUI.transform.position.y-640f) / 60.0f;
-
-        Debug.Log(y1);
-        Debug.Log(y2);
     }
 
     IEnumerator In()
