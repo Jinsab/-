@@ -49,6 +49,11 @@ public class CCharacter : MonoBehaviour
         }
     }
 
+    public void SetLanding(bool isLand)
+    {
+        _animator.SetBool("Land", isLand);
+    }
+
     public void GetDamaged()
     {
         StartCoroutine(TakeDamage());
