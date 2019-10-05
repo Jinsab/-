@@ -12,6 +12,7 @@ public class BlinkingEffect : MonoBehaviour
     public Image school;
     public Image task;
     public Image yeonghe;
+    public Image fire;
     public GameObject TimeUI;
     public GameObject QuizUI;
 
@@ -63,6 +64,8 @@ public class BlinkingEffect : MonoBehaviour
 
     IEnumerator MoveUI()
     {
+        fire.gameObject.SetActive(true);
+
         while (TimeUI.transform.position.y-640f > 0 && QuizUI.transform.position.y-640f < 0)
         {
             TimeUI.transform.position -= new Vector3(0f, y1);
@@ -79,5 +82,6 @@ public class BlinkingEffect : MonoBehaviour
 
         _readyQuiz.StartCoroutine("Ready", 0.5f);
         Rapid.SetActive(false);
+        fire.gameObject.SetActive(false);
     }
 }

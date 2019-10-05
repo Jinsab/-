@@ -16,7 +16,11 @@ public class QuestionManager : MonoBehaviour
     public Image timeOut;
     public Image yeonghe01;
     public Image yeonghe02;
+    public Image yeonghe03;
+    public Image yeonghe04;
     public Image fadeBackImage;
+    public Image outWall;
+    public Image fadeImage;
     public Button askButton01;
     public Button askButton02;
     public Button askButton03;
@@ -228,8 +232,33 @@ public class QuestionManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
 
-        
+        StartCoroutine("FadeOut");
+    }
 
+    IEnumerator FadeOut()
+    {
+        fadeImage.gameObject.SetActive(true);
+        outWall.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        yeonghe03.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        float speed = 4f;
+
+        while (outWall.transform.localPosition.y < 1134f)
+        {
+            outWall.transform.localPosition += new Vector3(0f, speed);
+            speed += 4f;
+            Debug.Log(outWall.transform.position);
+            yield return new WaitForSeconds(0.0133337f);
+        }
+
+        outWall.transform.localPosition = new Vector3(outWall.transform.localPosition.x, 1134f);
+        yeonghe03.gameObject.SetActive(false);
+        yeonghe04.gameObject.SetActive(true);
     }
 
     void Question01 (Button button1, Button button2, Button button3)
@@ -393,7 +422,7 @@ public class QuestionManager : MonoBehaviour
         int randomResult = Random.Range(0, 2);
 
         if (randomResult == 1)
-            button1.GetComponentInChildren<Text>().text = quotient + "개";
+            button1.GetComponentInChildren<Text>().text = quotient + "g";
         else
             button1.GetComponentInChildren<Text>().text = "배탈난다.";
 
@@ -402,12 +431,12 @@ public class QuestionManager : MonoBehaviour
         while (margin1 == 0)
             margin1 = Random.Range(-10, 11);
 
-        button2.GetComponentInChildren<Text>().text = (quotient + margin1) + "개";
+        button2.GetComponentInChildren<Text>().text = (quotient + margin1) + "g";
 
         while (margin2 == 0 || margin2 == margin1)
             margin2 = Random.Range(-10, 11);
 
-        button3.GetComponentInChildren<Text>().text = (quotient + margin2) + "개";
+        button3.GetComponentInChildren<Text>().text = (quotient + margin2) + "g";
 
         button1.onClick.RemoveAllListeners();
         button1.onClick.AddListener(correct);
