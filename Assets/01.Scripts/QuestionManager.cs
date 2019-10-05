@@ -21,13 +21,13 @@ public class QuestionManager : MonoBehaviour
     public Image fadeBackImage;
     public Image outWall;
     public Image fadeImage;
+    public Image film;
     public Button askButton01;
     public Button askButton02;
     public Button askButton03;
     public float maxTime = 10f;
     public Animator animator;
 
-    private int SelectedButton = -1;
     private int questionNumber = 0, randomQuestion;
     private float remainder = 0, quotient = 0;
     private int quizCount = 0;
@@ -773,10 +773,12 @@ public class QuestionManager : MonoBehaviour
         int okQuestion = randomQuestion;
 
         StartCoroutine("SetQuiz", 1.0f);
+        film.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
         ok_Mark.gameObject.SetActive(false);
+        film.gameObject.SetActive(false);
 
         if (quizCount >= 5)
             StartCoroutine("ClearQuiz");
@@ -789,9 +791,11 @@ public class QuestionManager : MonoBehaviour
         int okQuestion = randomQuestion;
 
         StartCoroutine("SetQuiz", 1.0f);
+        film.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
+        film.gameObject.SetActive(false);
         x_Mark.gameObject.SetActive(false);
     }
 }
