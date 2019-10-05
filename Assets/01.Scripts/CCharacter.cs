@@ -23,9 +23,14 @@ public class CCharacter : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(_trHitPosition.position, Vector2.zero);
 
-        if (hit)
+        if (hit.collider != null && hit.collider.tag == "Enemy")
         {
-            Debug.Log(hit.collider.tag);
+            CEnemy enemy = hit.transform.gameObject.GetComponent<CEnemy>();
+
+            if (enemy._eType == CEnemy.ENEMY_TYPE.PUNCH)
+            {
+                enemy.TakeDamaged();
+            }            
         }
     }
 
@@ -33,15 +38,22 @@ public class CCharacter : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(_trHitPosition.position, Vector2.zero);
 
-        if (hit)
+        if (hit.collider != null && hit.collider.tag == "Enemy")
         {
-            Debug.Log(hit.collider.tag);
+            CEnemy enemy = hit.transform.gameObject.GetComponent<CEnemy>();
+
+            if (enemy._eType == CEnemy.ENEMY_TYPE.KICK)
+            {
+                enemy.TakeDamaged();
+            }
         }
     }
 
     public void GetDamaged()
     {
         StartCoroutine(TakeDamage());
+
+        CGameManager._pInstance.PlayerTakeDamage();
     }
 
     IEnumerator TakeDamage()
