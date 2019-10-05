@@ -5,19 +5,31 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public float limitTime = 180.0f;
+    private float _limitTime = 180.0f;
+    public float limitTime
+    {
+        get
+        {
+            return _limitTime;
+        }
+        set
+        {
+            _limitTime = value;
+            timeSlider.value = limitTime;
+        }
+    }
     public Slider timeSlider;
     public Text timeText;
     int timeMinute = 0, timeSecond = 0;
 
-    private void Start()
-    {
-        StartCoroutine("CountTime", 1.0f);
-    }
-
     void Update()
     {
         timeCalculation(limitTime);
+
+        if (limitTime <= 0)
+        {
+            // 게임오버
+        }
     }
     
     void timeCalculation(float limitTime)
@@ -38,9 +50,11 @@ public class Timer : MonoBehaviour
     IEnumerator CountTime(float delayTime)
     {
         Debug.Log("Time : " + Time.time);
+        yield return new WaitForSeconds(delayTime);
+
         limitTime -= 1;
         timeSlider.value = limitTime;
-        yield return new WaitForSeconds(delayTime);
+
         if (limitTime != 0)
             StartCoroutine("CountTime", 1);
     }
