@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -71,5 +72,7 @@ public class Timer : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         StopCoroutine("CountTime");
+
+        SceneManager.LoadScene("Ending02");
     }
 }
