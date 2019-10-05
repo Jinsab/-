@@ -8,17 +8,26 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private Timer _timer;
 
     public Text questionText;
-    public Text correntText;
+    //public Text correntText;
     public Timer timer;
     public Image questionTimer;
+    public Image ok_Mark;
+    public Image x_Mark;
+    public Image timeOut;
+    public Image yeonghe01;
+    public Image yeonghe02;
+    public Image fadeBackImage;
     public Button askButton01;
     public Button askButton02;
     public Button askButton03;
     public float maxTime = 10f;
+    public Animator animator;
 
+    private int SelectedButton = -1;
     private int questionNumber = 0, randomQuestion;
     private float remainder = 0, quotient = 0;
     private int quizCount = 0;
+    private int hash = Animator.StringToHash("FlowerPot");
 
     private void Start()
     {
@@ -35,13 +44,13 @@ public class QuestionManager : MonoBehaviour
 
             if (questionTimer.fillAmount == 0)
             {
-                correntText.text = "시간 초과!";
+                timeOut.gameObject.SetActive(true);
                 timer.limitTime -= maxTime;
                 StartCoroutine("SetQuiz");
 
                 yield return new WaitForSeconds(1f);
 
-                correntText.text = "";
+                timeOut.gameObject.SetActive(false);
             }
         }
     }
@@ -191,6 +200,11 @@ public class QuestionManager : MonoBehaviour
     IEnumerator ClearQuiz()
     {
         _timer.StopCoroutine("CountTime");
+        yeonghe01.gameObject.SetActive(false);
+        yeonghe02.gameObject.SetActive(true);
+        animator.Play(hash);
+
+        StartCoroutine("FadeIn");
 
         while (gameObject.transform.parent.position.y > -1440f)
         {
@@ -203,13 +217,28 @@ public class QuestionManager : MonoBehaviour
         yield return new WaitForFixedUpdate();
     }
 
+    IEnumerator FadeIn()
+    {
+        float alpha = 0f;
+
+        while (fadeBackImage.color.a < 1)
+        {
+            alpha += 0.01667f;
+            fadeBackImage.color = new Color(0, 0, 0, alpha);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        
+
+    }
+
     void Question01 (Button button1, Button button2, Button button3)
     {
         // 어떤 수를 X로 나눴더니 몫이 Y, 나머지가 Z가 되었다. 어떤 수는 얼마인가?
         // 정답 1 : X*Y+Z, 정답 2 : 얼마
         // 예외처리 : Y＜X, 즉 X는 어떤 수 > X
 
-        int x = Random.Range(1, 100);
+        int x = Random.Range(1, 100); // 어떤수
         int y = Random.Range(1, x+1);
 
         Debug.Log(x);
@@ -217,13 +246,14 @@ public class QuestionManager : MonoBehaviour
 
         quotient = x / y;
         remainder = x % y;
+        float result = (x * quotient) + remainder;
 
-        questionText.text = "어떤 수를 " + x + "으로 나누었더니 몫이 " + quotient + ", 나머지가 " + remainder + "가 되었다. 어떤 수는 얼마인가?";
+        questionText.text = "어떤 수를 " + y + "으로 나누었더니 몫이 " + quotient + ", 나머지가 " + remainder + "가 되었다. 어떤 수는 얼마인가?";
 
         int randomResult = Random.Range(0, 2);
 
         if (randomResult == 1)
-            button1.GetComponentInChildren<Text>().text = "" + quotient;
+            button1.GetComponentInChildren<Text>().text = "" + result;
         else
             button1.GetComponentInChildren<Text>().text = "얼마";
 
@@ -232,13 +262,13 @@ public class QuestionManager : MonoBehaviour
         while (margin1 == 0)
             margin1 = Random.Range(-10, 11);
 
-        button2.GetComponentInChildren<Text>().text = "" + ((x * y) + remainder + margin1);
+        button2.GetComponentInChildren<Text>().text = "" + (result + margin1);
         
 
         while (margin2 == 0 || margin2 == margin1)
             margin2 = Random.Range(-10, 11);
 
-        button3.GetComponentInChildren<Text>().text = "" + ((x * y) + remainder + margin2);
+        button3.GetComponentInChildren<Text>().text = "" + (result + margin2);
 
         button1.onClick.RemoveAllListeners();
         button1.onClick.AddListener(correct);
@@ -695,40 +725,44 @@ public class QuestionManager : MonoBehaviour
 
     void correct()
     {
-        StopCoroutine("CorrectRoutine");
-        StopCoroutine("WrongRoutine");
+        x_Mark.gameObject.SetActive(false);
+        timeOut.gameObject.SetActive(false);
         StartCoroutine("CorrectRoutine");
     }
 
     void wrong()
     {
-        StopCoroutine("CorrectRoutine");
-        StopCoroutine("WrongRoutine");
+        ok_Mark.gameObject.SetActive(false);
+        timeOut.gameObject.SetActive(false);
         StartCoroutine("WrongRoutine");
     }
 
     IEnumerator CorrectRoutine()
     {
         quizCount++;
-        correntText.text = "정답!";
+        ok_Mark.gameObject.SetActive(true);
+        int okQuestion = randomQuestion;
+
         StartCoroutine("SetQuiz", 1.0f);
 
         yield return new WaitForSeconds(1f);
 
-        correntText.text = "";
+        ok_Mark.gameObject.SetActive(false);
 
-        if (quizCount == 5)
+        if (quizCount >= 5)
             StartCoroutine("ClearQuiz");
     }
 
     IEnumerator WrongRoutine()
     {
-        correntText.text = "오답!";
+        x_Mark.gameObject.SetActive(true);
         timer.limitTime -= maxTime;
+        int okQuestion = randomQuestion;
+
         StartCoroutine("SetQuiz", 1.0f);
 
         yield return new WaitForSeconds(1f);
 
-        correntText.text = "";
+        x_Mark.gameObject.SetActive(false);
     }
 }

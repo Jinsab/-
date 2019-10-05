@@ -9,11 +9,6 @@ public class ReadyQuiz : MonoBehaviour
     [SerializeField] private QuestionManager _questionManager;
     private float timeSecond = 0f;
 
-    private void Start()
-    {
-        //StartCoroutine("Ready", 0.5f);
-    }
-
     IEnumerator Ready()
     {
         gameObject.GetComponentInChildren<Text>().text = "READY!" + "\n";

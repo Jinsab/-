@@ -9,6 +9,8 @@ public class BlinkingEffect : MonoBehaviour
     public GameObject Rapid;
     public float speed = 10f;
     public CanvasGroup canvasGroup;
+    public Image school;
+    public Image task;
     public Image yeonghe;
     public GameObject TimeUI;
     public GameObject QuizUI;
@@ -68,6 +70,8 @@ public class BlinkingEffect : MonoBehaviour
 
             alpha += 0.01667f;
 
+            school.color = new Color(blinkingImage.material.color.r, blinkingImage.material.color.g, blinkingImage.material.color.b, alpha);
+            task.color = new Color(blinkingImage.material.color.r, blinkingImage.material.color.g, blinkingImage.material.color.b, alpha);
             yeonghe.color = new Color(blinkingImage.material.color.r, blinkingImage.material.color.g, blinkingImage.material.color.b, alpha);
 
             yield return new WaitForSeconds(0.016667f);

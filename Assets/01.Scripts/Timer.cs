@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    private float _limitTime = 180.0f;
+    private float _limitTime = 180.0f; // 시간제한 3분
+
     public float limitTime
     {
         get
@@ -16,6 +17,7 @@ public class Timer : MonoBehaviour
         {
             _limitTime = value;
             timeSlider.value = limitTime;
+            timeSlider.GetComponentInChildren<Image>().transform.position = new Vector3((520f - ((260f / 180f) * (180f - limitTime))), timeSlider.GetComponentInChildren<Image>().transform.position.y);
         }
     }
     public Slider timeSlider;
@@ -25,11 +27,6 @@ public class Timer : MonoBehaviour
     void Update()
     {
         timeCalculation(limitTime);
-
-        if (limitTime <= 0)
-        {
-            // 게임오버
-        }
     }
     
     void timeCalculation(float limitTime)
@@ -54,8 +51,20 @@ public class Timer : MonoBehaviour
 
         limitTime -= 1;
         timeSlider.value = limitTime;
+        timeSlider.GetComponentInChildren<Image>().transform.position = new Vector3((520f - ((260f/180f) * (180f - limitTime))), timeSlider.GetComponentInChildren<Image>().transform.position.y);
 
-        if (limitTime != 0)
+        if (limitTime > 0)
             StartCoroutine("CountTime", 1);
+        else
+            StartCoroutine("GameOver");
+    }
+
+    IEnumerator GameOver()
+    {
+        Debug.Log("GameOver");
+
+        yield return new WaitForFixedUpdate();
+
+        StopCoroutine("CountTime");
     }
 }
