@@ -9,6 +9,21 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
+    path: Assets/00.Scenes/Title.unity
+    guid: 21c7e425c6b73a843858eb4cded07e66
+  - enabled: 1
+    path: Assets/00.Scenes/Quiz.unity
+    guid: 4de85f3ac32aaca4ab748ab7cd0c595d
+  - enabled: 1
     path: Assets/00.Scenes/Action.unity
     guid: 424be6a747dda2241abec6f5f5d09e9a
+  - enabled: 1
+    path: Assets/00.Scenes/Ending/Ending00.unity
+    guid: 403a821cb0c001141978c583faf18a07
+  - enabled: 1
+    path: Assets/00.Scenes/Ending/Ending01.unity
+    guid: 334163db709e2044593828a7ef21473d
+  - enabled: 1
+    path: Assets/00.Scenes/Ending/Ending02.unity
+    guid: d52fec744d8ff47428c9a0354a51f6b4
   m_configObjects: {}
