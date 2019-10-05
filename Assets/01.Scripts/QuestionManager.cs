@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class QuestionManager : MonoBehaviour
     public Button askButton03;
     public float maxTime = 10f;
     public Animator animator;
-
+    
     private int questionNumber = 0, randomQuestion;
     private float remainder = 0, quotient = 0;
     private int quizCount = 0;
@@ -259,6 +260,10 @@ public class QuestionManager : MonoBehaviour
         outWall.transform.localPosition = new Vector3(outWall.transform.localPosition.x, 1134f);
         yeonghe03.gameObject.SetActive(false);
         yeonghe04.gameObject.SetActive(true);
+
+        TimeValue._pInstance._fLeftTime = timer.limitTime;
+        Debug.Log("Scene Change");
+        SceneManager.LoadScene("Action");
     }
 
     void Question01 (Button button1, Button button2, Button button3)
