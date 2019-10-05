@@ -8,7 +8,6 @@ public class Timer : MonoBehaviour
     public float limitTime = 180.0f;
     public Slider timeSlider;
     public Text timeText;
-    float second = 0.0f;
     int timeMinute = 0, timeSecond = 0;
 
     private void Start()
