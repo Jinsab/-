@@ -7,9 +7,11 @@ using UnityEngine.SceneManagement;
 public class QuestionManager : MonoBehaviour
 {
     [SerializeField] private Timer _timer;
+    [SerializeField] private AudioClip _true = null;
+    [SerializeField] private AudioClip _false = null;
 
+    public GameObject sounder;
     public Text questionText;
-    //public Text correntText;
     public Timer timer;
     public Image questionTimer;
     public Image ok_Mark;
@@ -777,6 +779,8 @@ public class QuestionManager : MonoBehaviour
         ok_Mark.gameObject.SetActive(true);
         int okQuestion = randomQuestion;
 
+        AudioSource.PlayClipAtPoint(_true, sounder.gameObject.transform.position);
+
         StartCoroutine("SetQuiz", 1.0f);
         film.gameObject.SetActive(true);
 
@@ -794,6 +798,8 @@ public class QuestionManager : MonoBehaviour
         x_Mark.gameObject.SetActive(true);
         timer.limitTime -= maxTime;
         int okQuestion = randomQuestion;
+
+        AudioSource.PlayClipAtPoint(_false, sounder.gameObject.transform.position);
 
         StartCoroutine("SetQuiz", 1.0f);
         film.gameObject.SetActive(true);

@@ -8,6 +8,7 @@ public class ReadyQuiz : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private QuestionManager _questionManager;
     private float timeSecond = 0f;
+    public AudioSource quiz_bgm;
 
     IEnumerator Ready()
     {
@@ -21,6 +22,7 @@ public class ReadyQuiz : MonoBehaviour
         gameObject.GetComponentInChildren<Text>().text += "GO!";
         yield return new WaitForSeconds(0.5f);
         StartCoroutine("ActiveFalse");
+        quiz_bgm.gameObject.SetActive(true);
     }
 
 
