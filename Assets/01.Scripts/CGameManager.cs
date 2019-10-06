@@ -18,16 +18,20 @@ public class CGameManager : MonoBehaviour
 
     [SerializeField] private CCharacter _character = null;
     [SerializeField] private CameraShake _cameraShake = null;
-    [SerializeField] private MeshRenderer _bgMsr = null;
     [SerializeField] private Image _uiFade = null;
     [SerializeField] private GameObject[] _prefEnemys = null;
     [SerializeField] private Transform[] _trEnemyRegenPos = null;
     [SerializeField] private Transform _trEnemyPrent = null;
-    [SerializeField] private AudioSource _bgm = null;
+    [SerializeField] private Text _textDistance = null;
 
     public GAME_STATE _eState = GAME_STATE.NULL;
     public bool _bIsScrollBG = false;
     public float _fCharacterActPos = 0f;
+    public float _fCharMoveSpeed = 1f;
+    public float _fPastTime = 0;
+
+    private float _fDistance = 0f;
+    public readonly float _fTotalTime = 180f;
 
     private void Awake()
     {
@@ -56,14 +60,32 @@ public class CGameManager : MonoBehaviour
 
             if (_character.transform.position.x < _fCharacterActPos)
             {
-                _character.transform.position = new Vector3(_fCharacterActPos, 
+                _character.transform.position = new Vector3(_fCharacterActPos,
                     _character.transform.position.y, _character.transform.position.z);
 
                 _character.SetLanding(false);
 
                 _eState = GAME_STATE.ACTION;
 
+                _textDistance.enabled = true;
+
                 StartCoroutine(RegenEnemy());
+            }
+        }
+        else if (_eState == GAME_STATE.ACTION)
+        {
+            _fDistance -= Time.deltaTime * _fCharMoveSpeed;
+            _textDistance.text = _fDistance.ToString("F1") + "KM";
+            _fPastTime += Time.deltaTime;
+
+            if (_fPastTime >= _fTotalTime)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Ending02");
+            }
+
+            if (_fDistance < 0f)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Ending00");
             }
         }
     }
@@ -73,6 +95,9 @@ public class CGameManager : MonoBehaviour
         _eState = GAME_STATE.PRE_ACTION;
         _bIsScrollBG = true;
         _character.SetLanding(true);
+        _textDistance.enabled = false;
+        _fDistance = 5f;
+        _fPastTime = TimeValue._pInstance._fLeftTime;
     }
 
     public void PlayerTakeDamage()

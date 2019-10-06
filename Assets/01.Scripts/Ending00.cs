@@ -37,4 +37,14 @@ public class Ending00 : MonoBehaviour
         _btnTitle.gameObject.SetActive(true);
         _btnRetry.gameObject.SetActive(true);
     }
+
+    public void GoTitle()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+    }
+
+    public void RetryGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Quiz");
+    }
 }
