@@ -23,6 +23,7 @@ public class QuestionManager : MonoBehaviour
     public Image yeonghe04;
     public Image fadeBackImage;
     public Image outWall;
+    public Image glass;
     public Image fadeImage;
     public Image film;
     public Button askButton01;
@@ -245,6 +246,7 @@ public class QuestionManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        glass.gameObject.SetActive(true);
         yeonghe03.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1f);
